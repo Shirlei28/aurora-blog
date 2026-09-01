@@ -1,0 +1,29 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import ArticleCard from '@/components/ArticleCard.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', ({ data }) => import.meta.env.PROD ? !data.draft : true);
+  const tags = [...new Set(posts.flatMap((post) => post.data.tags))];
+  return tags.map((tag) => ({
+    params: { tag },
+    props: { posts: posts.filter((post) => post.data.tags.includes(tag)), tag }
+  }));
+}
+
+interface Props {
+  posts: CollectionEntry<'blog'>[];
+  tag: string;
+}
+const { posts, tag } = Astro.props as Props;
+posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+---
+<BaseLayout title={`#${tag} | Aurora Blog`} description={`标签 ${tag} 下的文章。`}>
+  <section class="page-intro shell">
+    <p class="eyebrow">TAG</p>
+    <h1>#{tag}</h1>
+    <p>这个标签下共有 {posts.length} 篇文章。</p>
+  </section>
+  <section class="section-block shell"><div class="article-list">{posts.map((post) => <ArticleCard post={post} />)}</div></section>
+</BaseLayout>

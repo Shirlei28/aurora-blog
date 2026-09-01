@@ -1,0 +1,18 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getPublishedPosts, getTags } from '@/lib/posts';
+const posts = await getPublishedPosts();
+const tags = getTags(posts);
+---
+<BaseLayout title="标签 | Aurora Blog" description="按标签浏览 Aurora Blog。">
+  <section class="page-intro shell">
+    <p class="eyebrow">TAGS</p>
+    <h1>标签</h1>
+    <p>从更细的关键词进入文章。</p>
+  </section>
+  <section class="section-block shell">
+    <div class="tag-cloud tag-cloud-large">
+      {tags.map((tag) => <a href={`/tags/${encodeURIComponent(tag)}/`}>#{tag}<small>{posts.filter((post) => post.data.tags.includes(tag)).length}</small></a>)}
+    </div>
+  </section>
+</BaseLayout>

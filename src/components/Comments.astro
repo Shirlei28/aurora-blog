@@ -1,0 +1,30 @@
+---
+import { DYNAMIC } from '@/lib/config';
+---
+{DYNAMIC.twikooEnvId && (
+  <section class="comments section-block" aria-label="评论">
+    <div class="section-heading">
+      <div>
+        <p class="eyebrow">DISCUSSION</p>
+        <h2>评论</h2>
+      </div>
+    </div>
+    <div id="twikoo" data-env-id={DYNAMIC.twikooEnvId} data-cdn={DYNAMIC.twikooCdn}></div>
+    <script is:inline>
+      (async () => {
+        const node = document.querySelector('#twikoo');
+        const envId = node?.getAttribute('data-env-id');
+        const cdn = node?.getAttribute('data-cdn');
+        if (!node || !envId || !cdn) return;
+        try {
+          const script = document.createElement('script');
+          script.src = cdn;
+          script.onload = () => window.twikoo?.init({ envId, el: '#twikoo' });
+          document.head.appendChild(script);
+        } catch {
+          node.innerHTML = '<p class="muted">评论服务暂时不可用。</p>';
+        }
+      })();
+    </script>
+  </section>
+)}

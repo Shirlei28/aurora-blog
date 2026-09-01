@@ -1,0 +1,4 @@
+# 可选：团队统一 npm registry
+# registry=https://registry.npmjs.org/
+fund=false
+audit=true

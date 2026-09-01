@@ -1,0 +1,11 @@
+<button class="back-to-top" id="back-to-top" type="button" aria-label="回到顶部" title="回到顶部">↑</button>
+<script is:inline>
+  (() => {
+    const button = document.getElementById('back-to-top');
+    if (!button) return;
+    const toggle = () => button.classList.toggle('is-visible', window.scrollY > 700);
+    toggle();
+    window.addEventListener('scroll', toggle, { passive: true });
+    button.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+  })();
+</script>

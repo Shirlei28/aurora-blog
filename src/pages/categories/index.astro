@@ -1,0 +1,23 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getPublishedPosts, getCategories } from '@/lib/posts';
+const posts = await getPublishedPosts();
+const categories = getCategories(posts);
+---
+<BaseLayout title="分类 | Aurora Blog" description="按主题浏览 Aurora Blog。">
+  <section class="page-intro shell">
+    <p class="eyebrow">CATEGORIES</p>
+    <h1>分类</h1>
+    <p>把不同方向的内容放在同一张地图上。</p>
+  </section>
+  <section class="section-block shell">
+    <div class="category-grid category-grid-large">
+      {categories.map((category) => (
+        <a class="category-tile" href={`/categories/${encodeURIComponent(category)}/`}>
+          <span>{category}</span>
+          <small>{posts.filter((post) => post.data.category === category).length} 篇文章</small>
+        </a>
+      ))}
+    </div>
+  </section>
+</BaseLayout>

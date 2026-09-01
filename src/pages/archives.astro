@@ -1,0 +1,35 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import ArticleCard from '@/components/ArticleCard.astro';
+import { getPublishedPosts, formatDate } from '@/lib/posts';
+const posts = await getPublishedPosts();
+const groups = new Map<number, typeof posts>();
+for (const post of posts) {
+  const year = post.data.pubDate.getFullYear();
+  if (!groups.has(year)) groups.set(year, []);
+  groups.get(year).push(post);
+}
+---
+<BaseLayout title="归档 | Aurora Blog" description="按年份查看 Aurora Blog 的全部文章。">
+  <section class="page-intro shell">
+    <p class="eyebrow">ARCHIVES</p>
+    <h1>归档</h1>
+    <p>从时间轴回看一路写下来的东西。</p>
+  </section>
+  <section class="section-block shell archive-list">
+    {[...groups.entries()].sort((a, b) => b[0] - a[0]).map(([year, yearPosts]) => (
+      <section class="archive-year">
+        <h2>{year}</h2>
+        <div>
+          {yearPosts.map((post) => (
+            <a class="archive-row" href={`/posts/${post.id}/`}>
+              <time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate).replace(`${year}年`, '')}</time>
+              <strong>{post.data.title}</strong>
+              <span>{post.data.category}</span>
+            </a>
+          ))}
+        </div>
+      </section>
+    ))}
+  </section>
+</BaseLayout>

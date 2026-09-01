@@ -1,0 +1,36 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import ArticleCard from '@/components/ArticleCard.astro';
+import { getPostHref } from '@/lib/posts';
+
+interface Props {
+  current: CollectionEntry<'blog'>;
+  posts: CollectionEntry<'blog'>[];
+}
+
+const { current, posts } = Astro.props;
+const candidates = posts
+  .filter((post) => post.id !== current.id)
+  .map((post) => {
+    const sameCategory = post.data.category === current.data.category ? 3 : 0;
+    const sharedTags = post.data.tags.filter((tag) => current.data.tags.includes(tag)).length * 2;
+    const recency = Math.max(0, 1 - Math.abs(post.data.pubDate.valueOf() - current.data.pubDate.valueOf()) / (1000 * 60 * 60 * 24 * 365));
+    return { post, score: sameCategory + sharedTags + recency };
+  })
+  .sort((a, b) => b.score - a.score)
+  .slice(0, 3)
+  .map((item) => item.post);
+---
+{candidates.length > 0 && (
+  <section class="related-section" aria-labelledby="related-title">
+    <div class="section-heading compact-heading">
+      <div>
+        <p class="eyebrow">KEEP READING</p>
+        <h2 id="related-title">继续阅读</h2>
+      </div>
+    </div>
+    <div class="related-grid">
+      {candidates.map((post) => <ArticleCard post={post} />)}
+    </div>
+  </section>
+)}

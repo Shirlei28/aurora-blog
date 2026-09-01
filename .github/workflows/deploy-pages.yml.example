@@ -1,0 +1,23 @@
+# 这是平台无关的部署模板。
+# 根据你的 EdgeOne / Cloudflare / S3 / 其他静态托管平台替换最后一步。
+# 建议生产仓库另建一个 workflow，使用平台官方 Action。
+
+name: Deploy (example)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.12.0
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - name: Upload dist/
+        run: |
+          echo "把 dist/ 上传到你的静态托管平台。"

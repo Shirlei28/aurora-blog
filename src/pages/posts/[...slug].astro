@@ -1,0 +1,90 @@
+---
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import TableOfContents from '@/components/TableOfContents.astro';
+import Comments from '@/components/Comments.astro';
+import ArticleProgress from '@/components/ArticleProgress.astro';
+import MobileTableOfContents from '@/components/MobileTableOfContents.astro';
+import RelatedPosts from '@/components/RelatedPosts.astro';
+import BackToTop from '@/components/BackToTop.astro';
+import { SITE } from '@/lib/config';
+import { articleJsonLd, absoluteUrl } from '@/lib/seo';
+import { formatDate, getPublishedPosts, getPostHref, getReadingTime } from '@/lib/posts';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', ({ data }) => import.meta.env.PROD ? !data.draft : true);
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post }
+  }));
+}
+
+type Props = { post: CollectionEntry<'blog'> };
+const { post } = Astro.props as Props;
+const { Content, headings } = await render(post);
+const posts = await getPublishedPosts();
+const index = posts.findIndex((item) => item.id === post.id);
+const previous = posts[index + 1];
+const next = posts[index - 1];
+const canonical = post.data.canonical || getPostHref(post);
+const jsonLd = articleJsonLd({
+  title: post.data.title,
+  description: post.data.description,
+  url: absoluteUrl(canonical),
+  datePublished: post.data.pubDate,
+  dateModified: post.data.updatedDate,
+  image: post.data.cover
+});
+---
+<BaseLayout
+  title={`${post.data.title} | ${SITE.title}`}
+  description={post.data.description}
+  canonical={canonical}
+  image={post.data.cover}
+  article
+>
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)}></script>
+  </Fragment>
+
+  <article class="post-page shell">
+    <ArticleProgress />
+
+    <header class="post-header">
+      <div class="article-meta">
+        <a href={`/categories/${encodeURIComponent(post.data.category)}/`}>{post.data.category}</a>
+        <span>·</span>
+        <time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time>
+        <span>·</span>
+        <span>{getReadingTime(post)}</span>
+      </div>
+      <h1>{post.data.title}</h1>
+      <p class="post-lead">{post.data.description}</p>
+      <div class="tag-row">
+        {post.data.tags.map((tag) => <a href={`/tags/${encodeURIComponent(tag)}/`}>#{tag}</a>)}
+      </div>
+      {post.data.cover && <img class="post-cover" src={post.data.cover} alt={post.data.coverAlt || ''} loading="eager" />}
+    </header>
+
+    {post.data.toc && <MobileTableOfContents headings={headings} />}
+
+    <div class="post-layout">
+      <div class="post-content prose" data-reading-content>
+        <Content />
+      </div>
+      {post.data.toc && <TableOfContents headings={headings} />}
+    </div>
+
+    <div class="post-footer-block">
+      <div class="post-nav">
+        {previous ? <a href={getPostHref(previous)}><small>上一篇</small><strong>← {previous.data.title}</strong></a> : <span></span>}
+        {next ? <a class="post-nav-next" href={getPostHref(next)}><small>下一篇</small><strong>{next.data.title} →</strong></a> : <span></span>}
+      </div>
+
+      <RelatedPosts current={post} posts={posts} />
+      {post.data.comments && <Comments />}
+    </div>
+
+    <BackToTop />
+  </article>
+</BaseLayout>

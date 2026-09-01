@@ -1,0 +1,17 @@
+<button class="icon-button theme-toggle" type="button" aria-label="切换主题" title="切换主题">
+  <span aria-hidden="true">◐</span>
+</button>
+<script>
+  const button = document.querySelector<HTMLButtonElement>('.theme-toggle');
+  const root = document.documentElement;
+  const saved = localStorage.getItem('theme');
+  if (saved === 'light' || saved === 'dark') root.dataset.theme = saved;
+  else root.dataset.theme = 'system';
+
+  button?.addEventListener('click', () => {
+    const current = root.dataset.theme;
+    const next = current === 'dark' ? 'light' : 'dark';
+    root.dataset.theme = next;
+    localStorage.setItem('theme', next);
+  });
+</script>

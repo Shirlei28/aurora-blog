@@ -1,0 +1,84 @@
+<button class="icon-button search-trigger" type="button" aria-label="站内搜索" title="站内搜索">
+  <span aria-hidden="true">⌕</span>
+</button>
+<dialog class="search-dialog">
+  <form method="dialog" class="search-shell">
+    <div class="search-head">
+      <div>
+        <p class="eyebrow">SEARCH</p>
+        <h2>搜索文章</h2>
+      </div>
+      <button class="icon-button search-close" value="cancel" aria-label="关闭搜索">×</button>
+    </div>
+    <label class="search-input-wrap">
+      <span class="sr-only">关键词</span>
+      <input id="site-search-input" autocomplete="off" placeholder="输入关键词，例如 Astro、旅行、阅读……" />
+    </label>
+    <div id="search-results" class="search-results" aria-live="polite">
+      <p class="muted">开始输入以搜索全文。</p>
+    </div>
+  </form>
+</dialog>
+
+<script>
+  const trigger = document.querySelector<HTMLButtonElement>('.search-trigger');
+  const dialog = document.querySelector<HTMLDialogElement>('.search-dialog');
+  const input = document.querySelector<HTMLInputElement>('#site-search-input');
+  const results = document.querySelector<HTMLElement>('#search-results');
+
+  let pagefind;
+  let loaded = false;
+
+  // Pagefind's client bundle is generated after `astro build` and therefore
+  // does not exist during `astro dev`. Using an indirect dynamic import keeps
+  // Vite from trying to resolve the generated file while developing.
+  const dynamicImport = new Function('path', 'return import(path)');
+
+  async function loadPagefind() {
+    if (loaded) return pagefind;
+    loaded = true;
+    try {
+      pagefind = await dynamicImport('/pagefind/pagefind.js');
+      await pagefind.init();
+      return pagefind;
+    } catch {
+      return null;
+    }
+  }
+
+  trigger?.addEventListener('click', async () => {
+    dialog?.showModal();
+    input?.focus();
+    await loadPagefind();
+  });
+
+  dialog?.addEventListener('click', (event) => {
+    if (event.target === dialog) dialog.close();
+  });
+
+  input?.addEventListener('input', async () => {
+    const query = input.value.trim();
+    if (!results) return;
+    if (!query) {
+      results.innerHTML = '<p class="muted">开始输入以搜索全文。</p>';
+      return;
+    }
+    const pf = await loadPagefind();
+    if (!pf) {
+      results.innerHTML = '<p class="muted">本地开发模式下搜索索引尚未生成。运行 <code>npm run build</code> 后即可使用全文搜索。</p>';
+      return;
+    }
+    const search = await pf.search(query);
+    if (!search.results.length) {
+      results.innerHTML = '<p class="muted">没有找到匹配内容。</p>';
+      return;
+    }
+    const items = await Promise.all(search.results.slice(0, 8).map((item) => item.data()));
+    results.innerHTML = items.map((item) => `
+      <a class="search-result" href="${item.url}">
+        <strong>${item.meta?.title || '未命名文章'}</strong>
+        <span>${item.excerpt || ''}</span>
+      </a>
+    `).join('');
+  });
+</script>

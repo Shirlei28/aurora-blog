@@ -1,0 +1,17 @@
+---
+import { SITE } from '@/lib/config';
+const year = new Date().getFullYear();
+---
+<footer class="site-footer">
+  <div class="shell footer-grid">
+    <div>
+      <p class="eyebrow">KEEP WRITING</p>
+      <p class="footer-title">把值得留下的东西，慢慢写下来。</p>
+    </div>
+    <div class="footer-meta">
+      <p>© {year} {SITE.author}. All rights reserved.</p>
+      <p><a href="/rss.xml">RSS</a> · <a href="/sitemap-index.xml">Sitemap</a> · <a href="/privacy/">隐私</a></p>
+      <p>Built with Astro.</p>
+    </div>
+  </div>
+</footer>

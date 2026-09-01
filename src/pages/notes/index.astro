@@ -1,0 +1,26 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { render } from 'astro:content';
+import { getPublishedNotes } from '@/lib/notes';
+const notes = await getPublishedNotes();
+const rendered = await Promise.all(notes.map(async (note) => ({ note, Content: (await render(note)).Content })));
+---
+<BaseLayout title="随记 | Aurora Blog" description="短一些的想法、观察与日常记录。">
+  <section class="page-intro shell">
+    <p class="eyebrow">NOTES</p>
+    <h1>随记</h1>
+    <p>不必长成文章的东西，也值得有一个地方留下来。</p>
+  </section>
+  <section class="section-block shell notes-list">
+    {rendered.map(({ note, Content }) => (
+      <article class="note-card">
+        <div class="note-date">{note.data.date.toLocaleDateString('zh-CN', { year: 'numeric', month: '2-digit', day: '2-digit' })}</div>
+        <div class="note-body">
+          <h2>{note.data.title}</h2>
+          <div class="prose note-prose"><Content /></div>
+          <div class="tag-row">{note.data.tags.map((tag) => <span>#{tag}</span>)}</div>
+        </div>
+      </article>
+    ))}
+  </section>
+</BaseLayout>

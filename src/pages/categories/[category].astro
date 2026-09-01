@@ -1,0 +1,29 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import ArticleCard from '@/components/ArticleCard.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', ({ data }) => import.meta.env.PROD ? !data.draft : true);
+  const categories = [...new Set(posts.map((post) => post.data.category))];
+  return categories.map((category) => ({
+    params: { category },
+    props: { posts: posts.filter((post) => post.data.category === category), category }
+  }));
+}
+
+interface Props {
+  posts: CollectionEntry<'blog'>[];
+  category: string;
+}
+const { posts, category } = Astro.props as Props;
+posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+---
+<BaseLayout title={`${category} | Aurora Blog`} description={`${category} 分类下的文章。`}>
+  <section class="page-intro shell">
+    <p class="eyebrow">CATEGORY</p>
+    <h1>{category}</h1>
+    <p>这个主题下共有 {posts.length} 篇文章。</p>
+  </section>
+  <section class="section-block shell"><div class="article-list">{posts.map((post) => <ArticleCard post={post} />)}</div></section>
+</BaseLayout>
