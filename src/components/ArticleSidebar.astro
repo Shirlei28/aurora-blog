@@ -1,0 +1,53 @@
+---
+import type { Post } from '@/lib/posts';
+import { getPostHref } from '@/lib/posts';
+import { SITE } from '@/lib/config';
+
+interface Props {
+  posts: Post[];
+  currentId?: string;
+}
+
+const { posts, currentId } = Astro.props;
+const years = [...new Set(posts.map((post) => post.data.pubDate.getFullYear()))];
+---
+<aside class="article-sidebar" aria-label="文章导航">
+  <div class="article-sidebar-inner">
+    <div class="sidebar-section sidebar-site">
+      <a class="sidebar-site-title" href="/">{SITE.title}</a>
+      <p>{SITE.description}</p>
+    </div>
+
+    <nav class="sidebar-section sidebar-primary" aria-label="博客导航">
+      <p class="sidebar-label">浏览</p>
+      <a href="/posts/">全部文章</a>
+      <a href="/archives/">归档</a>
+      <a href="/categories/">分类</a>
+      <a href="/tags/">标签</a>
+      <a href="/notes/">随记</a>
+      <a href="/about/">关于</a>
+    </nav>
+
+    <div class="sidebar-section sidebar-posts">
+      <p class="sidebar-label">文章</p>
+      {years.map((year) => (
+        <details open={year === years[0]}>
+          <summary>{year}</summary>
+          <div class="sidebar-year-posts">
+            {posts
+              .filter((post) => post.data.pubDate.getFullYear() === year)
+              .map((post) => (
+                <a
+                  class:list={['sidebar-post-link', post.id === currentId && 'is-active']}
+                  href={getPostHref(post)}
+                  aria-current={post.id === currentId ? 'page' : undefined}
+                >
+                  {post.data.title}
+                </a>
+              ))}
+          </div>
+        </details>
+      ))}
+    </div>
+  </div>
+</aside>

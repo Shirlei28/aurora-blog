@@ -1,6 +1,7 @@
 ---
 import { getCollection, render, type CollectionEntry } from 'astro:content';
 import BaseLayout from '@/layouts/BaseLayout.astro';
+import ArticleSidebar from '@/components/ArticleSidebar.astro';
 import TableOfContents from '@/components/TableOfContents.astro';
 import Comments from '@/components/Comments.astro';
 import ArticleProgress from '@/components/ArticleProgress.astro';
@@ -47,44 +48,66 @@ const jsonLd = articleJsonLd({
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)}></script>
   </Fragment>
 
-  <article class="post-page shell">
-    <ArticleProgress />
+  <ArticleProgress />
 
-    <header class="post-header">
-      <div class="article-meta">
-        <a href={`/categories/${encodeURIComponent(post.data.category)}/`}>{post.data.category}</a>
-        <span>·</span>
-        <time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time>
-        <span>·</span>
-        <span>{getReadingTime(post)}</span>
-      </div>
-      <h1>{post.data.title}</h1>
-      <p class="post-lead">{post.data.description}</p>
-      <div class="tag-row">
-        {post.data.tags.map((tag) => <a href={`/tags/${encodeURIComponent(tag)}/`}>#{tag}</a>)}
-      </div>
-      {post.data.cover && <img class="post-cover" src={post.data.cover} alt={post.data.coverAlt || ''} loading="eager" />}
-    </header>
+  <div class="reading-workspace">
+    <ArticleSidebar posts={posts} currentId={post.id} />
 
-    {post.data.toc && <MobileTableOfContents headings={headings} />}
+    <div class="reading-main">
+      <details class="mobile-article-nav">
+        <summary>文章导航</summary>
+        <div class="mobile-article-nav-links">
+          <a href="/posts/">全部文章</a>
+          <a href="/archives/">归档</a>
+          <a href="/categories/">分类</a>
+          <a href="/tags/">标签</a>
+          <a href="/notes/">随记</a>
+        </div>
+      </details>
 
-    <div class="post-layout">
-      <div class="post-content prose" data-reading-content>
-        <Content />
-      </div>
+      <article class="reading-article">
+        <header class="reading-header">
+          <div class="article-meta">
+            <a href={`/categories/${encodeURIComponent(post.data.category)}/`}>{post.data.category}</a>
+            <span>·</span>
+            <time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time>
+            <span>·</span>
+            <span>阅读约 {getReadingTime(post)}</span>
+          </div>
+          <h1>{post.data.title}</h1>
+          <p class="post-lead">{post.data.description}</p>
+          <div class="tag-row">
+            {post.data.tags.map((tag) => <a href={`/tags/${encodeURIComponent(tag)}/`}>#{tag}</a>)}
+          </div>
+          {post.data.cover && (
+            <figure class="reading-cover">
+              <img src={post.data.cover} alt={post.data.coverAlt || ''} loading="eager" />
+            </figure>
+          )}
+        </header>
+
+        {post.data.toc && <MobileTableOfContents headings={headings} />}
+
+        <div class="post-content prose reading-prose" data-reading-content>
+          <Content />
+        </div>
+
+        <div class="post-footer-block reading-footer-block">
+          <div class="post-nav">
+            {previous ? <a href={getPostHref(previous)}><small>上一篇</small><strong>← {previous.data.title}</strong></a> : <span></span>}
+            {next ? <a class="post-nav-next" href={getPostHref(next)}><small>下一篇</small><strong>{next.data.title} →</strong></a> : <span></span>}
+          </div>
+
+          <RelatedPosts current={post} posts={posts} />
+          {post.data.comments && <Comments />}
+        </div>
+      </article>
+    </div>
+
+    <div class="reading-toc-column">
       {post.data.toc && <TableOfContents headings={headings} />}
     </div>
+  </div>
 
-    <div class="post-footer-block">
-      <div class="post-nav">
-        {previous ? <a href={getPostHref(previous)}><small>上一篇</small><strong>← {previous.data.title}</strong></a> : <span></span>}
-        {next ? <a class="post-nav-next" href={getPostHref(next)}><small>下一篇</small><strong>{next.data.title} →</strong></a> : <span></span>}
-      </div>
-
-      <RelatedPosts current={post} posts={posts} />
-      {post.data.comments && <Comments />}
-    </div>
-
-    <BackToTop />
-  </article>
+  <BackToTop />
 </BaseLayout>
