@@ -1,13 +1,16 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import ArticleCard from '@/components/ArticleCard.astro';
 import { getPublishedPosts, formatDate } from '@/lib/posts';
 const posts = await getPublishedPosts();
 const groups = new Map<number, typeof posts>();
 for (const post of posts) {
   const year = post.data.pubDate.getFullYear();
-  if (!groups.has(year)) groups.set(year, []);
-  groups.get(year).push(post);
+  const yearPosts = groups.get(year);
+  if (yearPosts) {
+    yearPosts.push(post);
+  } else {
+    groups.set(year, [post]);
+  }
 }
 ---
 <BaseLayout title="归档 | Aurora Blog" description="按年份查看 Aurora Blog 的全部文章。">

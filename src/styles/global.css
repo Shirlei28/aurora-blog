@@ -848,3 +848,142 @@ body::before {
   .reading-prose h2 { font-size: 27px; }
   .reading-prose h3 { font-size: 21px; }
 }
+
+/* =========================================================
+   Reading refinement — focused 2026 navigation +
+   golden-ratio-inspired Chinese typography.
+   ========================================================= */
+.article-sidebar-inner {
+  padding: 30px 18px 48px;
+}
+.sidebar-posts-only details {
+  margin: 0;
+}
+.sidebar-posts-only summary {
+  padding: 8px 10px 10px;
+  font-family: Georgia, 'Songti SC', 'STSong', serif;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: .04em;
+}
+.sidebar-posts-only .sidebar-year-posts {
+  margin: 2px 0 0;
+}
+.sidebar-posts-only .sidebar-post-link {
+  padding: 8px 10px;
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+/* Reading measure: about 40 CJK-friendly ems at desktop size. */
+.reading-header,
+.reading-prose,
+.reading-footer-block {
+  width: min(100%, 735px);
+  margin-inline: auto;
+}
+.reading-prose {
+  max-width: 735px;
+  font-size: 17.5px;
+  line-height: 1.82;
+  letter-spacing: .032em;
+  text-rendering: optimizeLegibility;
+  font-kerning: normal;
+  hanging-punctuation: first last;
+}
+.reading-prose p {
+  margin: 0 0 1.618em;
+  text-wrap: pretty;
+}
+.reading-prose p + p {
+  margin-top: 0;
+}
+.reading-prose h2 {
+  margin-top: 2.618em;
+  margin-bottom: 1em;
+  font-size: 30.5px;
+  line-height: 1.32;
+  letter-spacing: -.015em;
+}
+.reading-prose h3 {
+  margin-top: 2.1em;
+  margin-bottom: .9em;
+  font-size: 23.5px;
+  line-height: 1.42;
+  letter-spacing: -.008em;
+}
+.reading-prose h4 {
+  margin-top: 1.9em;
+  margin-bottom: .8em;
+  line-height: 1.5;
+}
+.reading-prose ul,
+.reading-prose ol,
+.reading-prose blockquote,
+.reading-prose pre,
+.reading-prose table,
+.reading-prose figure {
+  margin-top: 1.618em;
+  margin-bottom: 1.618em;
+}
+.reading-prose li {
+  line-height: 1.78;
+}
+.reading-prose li + li {
+  margin-top: .5em;
+}
+.reading-prose blockquote {
+  padding-left: 1.15em;
+  font-size: 1.04em;
+  line-height: 1.78;
+  letter-spacing: .025em;
+}
+.reading-prose code:not(pre code) {
+  letter-spacing: 0;
+}
+.reading-prose pre,
+.reading-prose pre code,
+.reading-prose table {
+  letter-spacing: 0;
+}
+.reading-prose img {
+  margin-inline: auto;
+}
+
+.mobile-post-list {
+  display: grid;
+  gap: 4px;
+}
+.mobile-article-nav .mobile-post-list a {
+  display: block;
+  border-radius: 7px;
+}
+.mobile-article-nav .mobile-post-list a.is-active {
+  border-color: color-mix(in srgb, var(--accent) 50%, var(--line));
+  background: color-mix(in srgb, var(--accent) 8%, transparent);
+  color: var(--accent);
+}
+
+@media (max-width: 620px) {
+  .reading-header,
+  .reading-prose,
+  .reading-footer-block {
+    width: 100%;
+  }
+  .reading-prose {
+    font-size: 16.5px;
+    line-height: 1.84;
+    letter-spacing: .025em;
+  }
+  .reading-prose p {
+    margin-bottom: 1.5em;
+  }
+  .reading-prose h2 {
+    margin-top: 2.35em;
+    font-size: 27px;
+  }
+  .reading-prose h3 {
+    margin-top: 1.95em;
+    font-size: 21px;
+  }
+}

@@ -33,19 +33,19 @@ const jsonLd = articleJsonLd({
   description: post.data.description,
   url: absoluteUrl(canonical),
   datePublished: post.data.pubDate,
-  dateModified: post.data.updatedDate,
-  image: post.data.cover
+  ...(post.data.updatedDate ? { dateModified: post.data.updatedDate } : {}),
+  ...(post.data.cover ? { image: post.data.cover } : {})
 });
 ---
 <BaseLayout
   title={`${post.data.title} | ${SITE.title}`}
   description={post.data.description}
   canonical={canonical}
-  image={post.data.cover}
+  {...(post.data.cover ? { image: post.data.cover } : {})}
   article
 >
   <Fragment slot="head">
-    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)}></script>
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)}></script>
   </Fragment>
 
   <ArticleProgress />
@@ -55,13 +55,19 @@ const jsonLd = articleJsonLd({
 
     <div class="reading-main">
       <details class="mobile-article-nav">
-        <summary>文章导航</summary>
-        <div class="mobile-article-nav-links">
-          <a href="/posts/">全部文章</a>
-          <a href="/archives/">归档</a>
-          <a href="/categories/">分类</a>
-          <a href="/tags/">标签</a>
-          <a href="/notes/">随记</a>
+        <summary>2026 文章</summary>
+        <div class="mobile-article-nav-links mobile-post-list">
+          {posts
+            .filter((item) => item.data.pubDate.getFullYear() === 2026)
+            .map((item) => (
+              <a
+                class:list={[item.id === post.id && 'is-active']}
+                href={getPostHref(item)}
+                aria-current={item.id === post.id ? 'page' : undefined}
+              >
+                {item.data.title}
+              </a>
+            ))}
         </div>
       </details>
 

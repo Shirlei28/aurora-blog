@@ -26,13 +26,32 @@
   const input = document.querySelector<HTMLInputElement>('#site-search-input');
   const results = document.querySelector<HTMLElement>('#search-results');
 
-  let pagefind;
+  interface PagefindData {
+    url: string;
+    excerpt?: string;
+    meta?: { title?: string };
+  }
+
+  interface PagefindResult {
+    data: () => Promise<PagefindData>;
+  }
+
+  interface PagefindSearchResponse {
+    results: PagefindResult[];
+  }
+
+  interface PagefindApi {
+    init: () => Promise<void>;
+    search: (query: string) => Promise<PagefindSearchResponse>;
+  }
+
+  let pagefind: PagefindApi | null = null;
   let loaded = false;
 
   // Pagefind's client bundle is generated after `astro build` and therefore
   // does not exist during `astro dev`. Using an indirect dynamic import keeps
   // Vite from trying to resolve the generated file while developing.
-  const dynamicImport = new Function('path', 'return import(path)');
+  const dynamicImport = new Function('path', 'return import(path)') as (path: string) => Promise<PagefindApi>;
 
   async function loadPagefind() {
     if (loaded) return pagefind;
@@ -73,7 +92,7 @@
       results.innerHTML = '<p class="muted">没有找到匹配内容。</p>';
       return;
     }
-    const items = await Promise.all(search.results.slice(0, 8).map((item) => item.data()));
+    const items = await Promise.all(search.results.slice(0, 8).map((item: PagefindResult) => item.data()));
     results.innerHTML = items.map((item) => `
       <a class="search-result" href="${item.url}">
         <strong>${item.meta?.title || '未命名文章'}</strong>

@@ -35,7 +35,7 @@ const links = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/data/links' }),
   schema: z.object({
     name: z.string(),
-    url: z.string().url(),
+    url: z.url(),
     description: z.string().default('')
   })
 });

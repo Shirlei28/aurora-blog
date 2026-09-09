@@ -1,18 +1,18 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import ArticleCard from '@/components/ArticleCard.astro';
 import { getPublishedPosts } from '@/lib/posts';
+
 const posts = await getPublishedPosts();
+const latest = posts[0];
+
+if (latest) {
+  return Astro.redirect(`/posts/${latest.id}/`);
+}
 ---
-<BaseLayout title="文章 | Aurora Blog" description="Aurora Blog 的全部文章。">
+<BaseLayout title="文章 | Aurora Blog" description="暂时还没有文章。">
   <section class="page-intro shell">
-    <p class="eyebrow">ARCHIVE</p>
+    <p class="eyebrow">POSTS</p>
     <h1>文章</h1>
-    <p>技术、阅读、生活与长期思考，全部收在这里。</p>
-  </section>
-  <section class="section-block shell">
-    <div class="article-list">
-      {posts.map((post) => <ArticleCard post={post} />)}
-    </div>
+    <p>暂时还没有文章。</p>
   </section>
 </BaseLayout>

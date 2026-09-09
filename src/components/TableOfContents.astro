@@ -46,6 +46,7 @@ const visible = headings.filter((heading) => heading.depth >= 2 && heading.depth
     );
 
     headings.forEach((heading) => observer.observe(heading));
-    setActive(headings[0].id);
+    const firstHeading = headings[0];
+    if (firstHeading) setActive(firstHeading.id);
   }
 </script>
