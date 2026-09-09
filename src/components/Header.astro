@@ -1,7 +1,11 @@
 ---
 import { SITE } from '@/lib/config';
+import { getPublishedPosts, getPostHref } from '@/lib/posts';
 import SearchDialog from './SearchDialog.astro';
 import ThemeToggle from './ThemeToggle.astro';
+
+const posts = await getPublishedPosts();
+const latestPostHref = posts[0] ? getPostHref(posts[0]) : '/posts/';
 ---
 <header class="site-header">
   <div class="shell header-inner">
@@ -18,7 +22,10 @@ import ThemeToggle from './ThemeToggle.astro';
     </button>
 
     <nav id="site-nav" class="site-nav" aria-label="主导航">
-      {SITE.nav.map((item) => <a href={item.href}>{item.label}</a>)}
+      {SITE.nav.map((item) => {
+        const href = item.href === '/posts/' ? latestPostHref : item.href;
+        return <a href={href}>{item.label}</a>;
+      })}
       <SearchDialog />
       <ThemeToggle />
     </nav>
