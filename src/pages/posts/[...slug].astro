@@ -3,10 +3,10 @@ import { getCollection, render, type CollectionEntry } from 'astro:content';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import ArticleSidebar from '@/components/ArticleSidebar.astro';
 import TableOfContents from '@/components/TableOfContents.astro';
-import Comments from '@/components/Comments.astro';
+
 import ArticleProgress from '@/components/ArticleProgress.astro';
 import MobileTableOfContents from '@/components/MobileTableOfContents.astro';
-import RelatedPosts from '@/components/RelatedPosts.astro';
+
 import BackToTop from '@/components/BackToTop.astro';
 import { SITE } from '@/lib/config';
 import { articleJsonLd, absoluteUrl } from '@/lib/seo';
@@ -102,8 +102,8 @@ const jsonLd = articleJsonLd({
             {next ? <a class="post-nav-next" href={getPostHref(next)}><small>下一篇</small><strong>{next.data.title} →</strong></a> : <span></span>}
           </div>
 
-          <RelatedPosts current={post} posts={posts} />
-          {post.data.comments && <Comments />}
+          
+          
         </div>
       </article>
     </div>
