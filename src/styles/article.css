@@ -61,16 +61,30 @@
   font-size: 16px;
   line-height: 1.76;
   letter-spacing: 0.01em;
+
+  word-break: normal;
   overflow-wrap: break-word;
+  line-break: strict;
+
   text-rendering: optimizeLegibility;
   font-kerning: normal;
-  hanging-punctuation: first last;
 }
 
 .reading-prose p {
   margin-top: 0;
   margin-bottom: 1.38em;
-  text-wrap: pretty;
+
+  /* 中文正文不要使用 pretty 自动美化换行 */
+  text-wrap: wrap;
+
+  /* 中文标点按照中文排版规则换行 */
+  line-break: strict;
+
+  /* 英文长单词必要时允许换行，避免撑破手机宽度 */
+  overflow-wrap: break-word;
+
+  /* 不强制拆开普通英文单词 */
+  word-break: normal;
 }
 
 .reading-prose p + p {

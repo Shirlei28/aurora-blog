@@ -491,7 +491,7 @@ body::before {
   background: var(--accent);
   opacity: .7;
 }
-.prose p { text-wrap: pretty; }
+.prose p { }
 .prose ul, .prose ol { padding-left: 1.4em; }
 .prose li + li { margin-top: .45em; }
 .prose hr { border: 0; border-top: 1px solid var(--line); margin: 3em 0; }
