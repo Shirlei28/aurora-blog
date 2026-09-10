@@ -1,0 +1,44 @@
+<script>
+  function enhanceExternalLinks() {
+    const article = document.querySelector('[data-reading-content]');
+    if (!article) return;
+
+    article.querySelectorAll<HTMLAnchorElement>('a[href]').forEach((link) => {
+      const href = link.getAttribute('href');
+      if (!href) return;
+
+      // 这些都属于站内/页内导航，保持当前标签页。
+      if (
+        href.startsWith('#') ||
+        href.startsWith('/') ||
+        href.startsWith('./') ||
+        href.startsWith('../') ||
+        href.startsWith('?')
+      ) {
+        return;
+      }
+
+      // 非网页协议不处理，例如 mailto: / tel: / javascript:。
+      if (!/^https?:\/\//i.test(href)) {
+        return;
+      }
+
+      try {
+        const url = new URL(href, window.location.href);
+
+        // 只有不同 origin 的真正外部链接才新标签打开。
+        if (url.origin !== window.location.origin) {
+          link.target = '_blank';
+          link.rel = 'noopener noreferrer';
+        }
+      } catch {
+        // 无法解析的 href 保持原样。
+      }
+    });
+  }
+
+  enhanceExternalLinks();
+
+  // 兼容 Astro 页面切换 / View Transitions。
+  document.addEventListener('astro:page-load', enhanceExternalLinks);
+</script>

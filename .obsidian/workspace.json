@@ -4,21 +4,21 @@
     "type": "split",
     "children": [
       {
-        "id": "5ac9334ce2118394",
+        "id": "e62a80522e9a1b52",
         "type": "tabs",
         "children": [
           {
-            "id": "a0bdffb462265949",
+            "id": "47241271da9647b1",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "src/content/blog/my-first-real-post.md",
+                "file": "src/content/blog/second-true.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "my-first-real-post"
+              "title": "second-true"
             }
           }
         ]
@@ -188,18 +188,24 @@
       "bases:新建数据库": false
     }
   },
-  "active": "a0bdffb462265949",
+  "active": "47241271da9647b1",
   "lastOpenFiles": [
-    "src/data/links/aurora-friend.md",
+    "src/styles/article-reading-polish.css",
+    "src/content/blog/wavy-card.md",
+    "src/content/blog/second-true.md",
+    "().md",
+    "src/content/blog/sunk-cost.md",
+    "src/content/blog/welcome.md",
+    "src/content/blog/winote-2.md",
+    "连结.md",
+    "src/content/blog/reading-experience.md",
     "src/content/blog/my-first-real-post.md",
+    "src/data/links/aurora-friend.md",
     "未命名.base",
     "README.md",
-    "().md",
-    "src/content/blog/reading-experience.md",
     "src/content/blog/building-an-independent-blog.md",
     "src/content/blog/astro-content-workflow.md",
     "public/favicon.svg",
-    "src/content/blog/welcome.md",
     "src/data/notes/hello.md"
   ]
 }

@@ -1,0 +1,422 @@
+/*
+ * Aurora Blog · Article styles
+ * Consolidated from:
+ * - article-minimal.css
+ * - media.css
+ * - article-reading-polish.css
+ *
+ * Keep global.css for global layout/theme.
+ * Keep this file for article-specific typography and media.
+ */
+
+/* =========================================================
+   Article rhythm
+   ========================================================= */
+
+.reading-main {
+  padding-top: 42px;
+}
+
+.reading-header-minimal {
+  margin-bottom: 34px;
+}
+
+.reading-header-minimal h1 {
+  margin: 0;
+  max-width: 760px;
+  font-family: inherit;
+  font-size: clamp(28px, 2.5vw, 34px);
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+.article-meta-minimal {
+  margin-top: 12px;
+  gap: 7px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.6;
+  letter-spacing: 0.01em;
+}
+
+.reading-header-minimal .reading-cover {
+  margin-top: 26px;
+}
+
+/* =========================================================
+   Chinese long-form typography
+   ========================================================= */
+
+.reading-header,
+.reading-prose,
+.reading-footer-block {
+  width: min(100%, 735px);
+  margin-inline: auto;
+}
+
+.reading-prose {
+  max-width: 720px;
+  font-size: 16px;
+  line-height: 1.76;
+  letter-spacing: 0.01em;
+  overflow-wrap: break-word;
+  text-rendering: optimizeLegibility;
+  font-kerning: normal;
+  hanging-punctuation: first last;
+}
+
+.reading-prose p {
+  margin-top: 0;
+  margin-bottom: 1.38em;
+  text-wrap: pretty;
+}
+
+.reading-prose p + p {
+  margin-top: 0;
+}
+
+/* If an article accidentally contains an H1, keep it restrained. */
+.reading-prose h1 {
+  margin-top: 2.5em;
+  margin-bottom: 0.9em;
+  font-size: 28px;
+  line-height: 1.35;
+  letter-spacing: -0.02em;
+}
+
+.reading-prose h2 {
+  margin-top: 2.35em;
+  margin-bottom: 0.8em;
+  padding-top: 0;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: -0.015em;
+  scroll-margin-top: 100px;
+}
+
+.reading-prose h2::before {
+  display: none;
+}
+
+.reading-prose h3 {
+  margin-top: 2em;
+  margin-bottom: 0.7em;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.45;
+  letter-spacing: -0.01em;
+  scroll-margin-top: 100px;
+}
+
+.reading-prose h4 {
+  margin-top: 1.8em;
+  margin-bottom: 0.65em;
+  font-size: 17px;
+  line-height: 1.5;
+  scroll-margin-top: 100px;
+}
+
+.reading-prose ul,
+.reading-prose ol {
+  margin-top: 0.9em;
+  margin-bottom: 1.35em;
+}
+
+.reading-prose li {
+  line-height: 1.72;
+}
+
+.reading-prose li + li {
+  margin-top: 0.45em;
+}
+
+.reading-prose blockquote {
+  margin: 1.7em 0;
+  padding-left: 1.15em;
+  font-size: 1.04em;
+  line-height: 1.75;
+  letter-spacing: 0.02em;
+}
+
+.reading-prose pre {
+  margin: 1.7em 0;
+  border-radius: 9px;
+}
+
+.reading-prose pre,
+.reading-prose pre code,
+.reading-prose table,
+.reading-prose code:not(pre code) {
+  letter-spacing: 0;
+}
+
+.mobile-toc {
+  margin-bottom: 28px;
+}
+
+/* =========================================================
+   Article links
+   ========================================================= */
+
+.reading-prose a {
+  color: var(--accent, #c8a36a);
+  text-decoration: none;
+  text-underline-offset: 0;
+  transition: color 160ms ease, opacity 160ms ease;
+}
+
+.reading-prose a:hover {
+  color: var(--accent, #c8a36a);
+  opacity: 0.78;
+  text-decoration: none;
+}
+
+.reading-prose a:visited {
+  color: var(--accent, #c8a36a);
+}
+
+.reading-prose a:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+.reading-prose a:has(> img) {
+  display: block;
+  text-decoration: none;
+}
+
+.reading-prose a:has(> img):hover {
+  opacity: 1;
+}
+
+/* =========================================================
+   Images / figures
+   ========================================================= */
+
+.reading-prose img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 1.9rem auto;
+  border-radius: 10px;
+  object-fit: contain;
+}
+
+.reading-prose figure {
+  margin: 2rem 0;
+}
+
+.reading-prose figure > img,
+.reading-prose figure > video {
+  margin: 0 auto;
+}
+
+.reading-prose figcaption {
+  margin-top: 0.72rem;
+  padding-inline: 0.4rem;
+  color: var(--muted);
+  font-size: 0.84rem;
+  line-height: 1.65;
+  letter-spacing: 0.01em;
+  text-align: center;
+}
+
+.reading-prose .media-wide {
+  width: min(1000px, calc(100vw - 48px));
+  max-width: none;
+  margin-left: 50%;
+  transform: translateX(-50%);
+}
+
+.reading-prose .media-narrow {
+  width: min(620px, 100%);
+  margin-inline: auto;
+}
+
+/* =========================================================
+   Video / embeds
+   ========================================================= */
+
+.reading-prose video {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  margin: 2rem auto;
+  border: 0;
+  border-radius: 10px;
+  background: #000;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.04);
+}
+
+.reading-prose video.media-portrait {
+  width: min(420px, 100%);
+}
+
+.video-embed {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  margin: 2rem 0;
+  overflow: hidden;
+  border-radius: 10px;
+  background: #0e0e0e;
+}
+
+.video-embed iframe {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.video-embed.is-4-3 {
+  aspect-ratio: 4 / 3;
+}
+
+.video-embed.is-portrait {
+  width: min(430px, 100%);
+  aspect-ratio: 9 / 16;
+  margin-inline: auto;
+}
+
+/* =========================================================
+   Galleries
+   ========================================================= */
+
+.media-gallery {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin: 2rem 0;
+}
+
+.media-gallery img {
+  width: 100%;
+  height: 100%;
+  min-height: 180px;
+  margin: 0;
+  object-fit: cover;
+}
+
+.media-gallery.is-3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+/* =========================================================
+   Dark media treatment
+   ========================================================= */
+
+:root[data-theme='dark'] .reading-prose img,
+:root[data-theme='dark'] .reading-prose video,
+html.dark .reading-prose img,
+html.dark .reading-prose video {
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.055);
+}
+
+/* =========================================================
+   Responsive
+   ========================================================= */
+
+@media (max-width: 960px) {
+  .reading-main {
+    padding-top: 32px;
+  }
+
+  .reading-header-minimal {
+    margin-bottom: 30px;
+  }
+
+  .reading-header-minimal h1 {
+    font-size: clamp(28px, 6vw, 34px);
+  }
+
+  .reading-prose {
+    max-width: 100%;
+    font-size: 16px;
+    line-height: 1.76;
+    letter-spacing: 0.008em;
+  }
+}
+
+@media (max-width: 700px) {
+  .reading-prose img,
+  .reading-prose video,
+  .reading-prose figure,
+  .video-embed {
+    margin-top: 1.55rem;
+    margin-bottom: 1.55rem;
+  }
+
+  .reading-prose img,
+  .reading-prose video,
+  .video-embed {
+    border-radius: 8px;
+  }
+
+  .reading-prose figcaption {
+    margin-top: 0.6rem;
+    font-size: 0.8rem;
+  }
+
+  .media-gallery,
+  .media-gallery.is-3 {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .media-gallery img {
+    min-height: 0;
+  }
+
+  .reading-prose .media-wide {
+    width: calc(100vw - 28px);
+  }
+
+  .reading-header-minimal h1 {
+    font-size: 26px;
+    line-height: 1.34;
+  }
+}
+
+@media (max-width: 620px) {
+  .reading-main {
+    padding-top: 24px;
+  }
+
+  .article-meta-minimal {
+    margin-top: 10px;
+    font-size: 12px;
+  }
+
+  .reading-header,
+  .reading-prose,
+  .reading-footer-block {
+    width: 100%;
+  }
+
+  .reading-prose {
+    font-size: 16px;
+    line-height: 1.74;
+    letter-spacing: 0;
+  }
+
+  .reading-prose h1 {
+    font-size: 25px;
+  }
+
+  .reading-prose h2 {
+    margin-top: 2.2em;
+    font-size: 22px;
+  }
+
+  .reading-prose h3 {
+    font-size: 19px;
+  }
+}

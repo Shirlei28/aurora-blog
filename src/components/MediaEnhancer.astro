@@ -1,0 +1,24 @@
+<script>
+  function enhanceArticleMedia() {
+    const article = document.querySelector('[data-reading-content]');
+    if (!article) return;
+
+    article.querySelectorAll('img').forEach((img, index) => {
+      if (!img.hasAttribute('loading')) img.loading = index === 0 ? 'eager' : 'lazy';
+      img.decoding = 'async';
+    });
+
+    article.querySelectorAll('video').forEach((video) => {
+      if (!video.hasAttribute('preload')) video.preload = 'metadata';
+      video.setAttribute('playsinline', '');
+    });
+
+    article.querySelectorAll('iframe').forEach((iframe) => {
+      if (!iframe.hasAttribute('loading')) iframe.loading = 'lazy';
+      if (!iframe.hasAttribute('allowfullscreen')) iframe.setAttribute('allowfullscreen', '');
+    });
+  }
+
+  enhanceArticleMedia();
+  document.addEventListener('astro:page-load', enhanceArticleMedia);
+</script>

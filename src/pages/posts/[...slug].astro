@@ -11,6 +11,9 @@ import BackToTop from '@/components/BackToTop.astro';
 import { SITE } from '@/lib/config';
 import { articleJsonLd, absoluteUrl } from '@/lib/seo';
 import { formatDate, getPublishedPosts, getPostHref, getReadingTime } from '@/lib/posts';
+import MediaEnhancer from '@/components/MediaEnhancer.astro';
+import '@/styles/article.css';
+import ExternalLinks from '@/components/ExternalLinks.astro';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog', ({ data }) => import.meta.env.PROD ? !data.draft : true);
@@ -72,19 +75,14 @@ const jsonLd = articleJsonLd({
       </details>
 
       <article class="reading-article">
-        <header class="reading-header">
-          <div class="article-meta">
-            <a href={`/categories/${encodeURIComponent(post.data.category)}/`}>{post.data.category}</a>
-            <span>·</span>
+        <header class="reading-header reading-header-minimal">
+          <h1>{post.data.title}</h1>
+          <div class="article-meta article-meta-minimal">
             <time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time>
             <span>·</span>
             <span>阅读约 {getReadingTime(post)}</span>
           </div>
-          <h1>{post.data.title}</h1>
-          <p class="post-lead">{post.data.description}</p>
-          <div class="tag-row">
-            {post.data.tags.map((tag) => <a href={`/tags/${encodeURIComponent(tag)}/`}>#{tag}</a>)}
-          </div>
+
           {post.data.cover && (
             <figure class="reading-cover">
               <img src={post.data.cover} alt={post.data.coverAlt || ''} loading="eager" />
@@ -116,4 +114,6 @@ const jsonLd = articleJsonLd({
   </div>
 
   <BackToTop />
+  <MediaEnhancer />
+  <ExternalLinks />
 </BaseLayout>
