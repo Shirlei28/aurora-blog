@@ -225,6 +225,10 @@ img { display: block; max-width: 100%; }
 
 @media (max-width: 720px) {
   :root { --header-offset: 68px; }
+
+  html.header-hidden {
+    --header-offset: 0px;
+  }
   .shell { width: min(calc(100% - 28px), var(--max)); }
   .site-header { backdrop-filter: blur(10px); }
   .header-inner { min-height: 68px; }
@@ -343,14 +347,12 @@ html[data-theme='dark'] .brand-logo-dark {
 .site-nav > a::after { content: ''; position: absolute; left: 0; bottom: -8px; width: 0; height: 1px; background: var(--text); transition: width .25s ease; }
 .site-nav > a:hover::after { width: 100%; }
 
-@media (min-width: 901px) {
-  .site-header.is-hidden {
-    transform: translateY(-100%);
-  }
+.site-header.is-hidden {
+  transform: translateY(-100%);
+}
 
-  html.header-hidden {
-    --header-offset: 0px;
-  }
+html.header-hidden {
+  --header-offset: 0px;
 }
 
 @media (prefers-reduced-motion: reduce) {

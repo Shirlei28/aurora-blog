@@ -53,13 +53,6 @@ const latestPostHref = posts[0] ? getPostHref(posts[0]) : '/posts/';
   const toggle = document.querySelector<HTMLButtonElement>('.nav-toggle');
   const nav = document.querySelector<HTMLElement>('#site-nav');
   const header = document.querySelector<HTMLElement>('.site-header');
-  const desktopQuery = window.matchMedia('(min-width: 901px)');
-
-  toggle?.addEventListener('click', () => {
-    const expanded = toggle.getAttribute('aria-expanded') === 'true';
-    toggle.setAttribute('aria-expanded', String(!expanded));
-    nav?.classList.toggle('is-open', !expanded);
-  });
 
   let lastScrollY = window.scrollY;
   let ticking = false;
@@ -70,21 +63,35 @@ const latestPostHref = posts[0] ? getPostHref(posts[0]) : '/posts/';
   };
 
   const hideHeader = () => {
+    if (nav?.classList.contains('is-open')) return;
+
     header?.classList.add('is-hidden');
     document.documentElement.classList.add('header-hidden');
   };
 
+  toggle?.addEventListener('click', () => {
+    const expanded = toggle.getAttribute('aria-expanded') === 'true';
+    const nextExpanded = !expanded;
+
+    toggle.setAttribute('aria-expanded', String(nextExpanded));
+    nav?.classList.toggle('is-open', nextExpanded);
+
+    if (nextExpanded) {
+      showHeader();
+    }
+  });
+
   const updateHeader = () => {
     const currentScrollY = Math.max(window.scrollY, 0);
 
-    if (!desktopQuery.matches) {
+    if (currentScrollY <= 24) {
       showHeader();
       lastScrollY = currentScrollY;
       ticking = false;
       return;
     }
 
-    if (currentScrollY <= 24) {
+    if (nav?.classList.contains('is-open')) {
       showHeader();
       lastScrollY = currentScrollY;
       ticking = false;
@@ -99,6 +106,7 @@ const latestPostHref = posts[0] ? getPostHref(posts[0]) : '/posts/';
       } else {
         showHeader();
       }
+
       lastScrollY = currentScrollY;
     }
 
@@ -115,9 +123,4 @@ const latestPostHref = posts[0] ? getPostHref(posts[0]) : '/posts/';
     },
     { passive: true }
   );
-
-  desktopQuery.addEventListener('change', () => {
-    showHeader();
-    lastScrollY = window.scrollY;
-  });
 </script>
