@@ -313,6 +313,9 @@ img { display: block; max-width: 100%; }
   }
 
   .mobile-posts-menu[open] > summary {
+    position: relative;
+    z-index: 2;
+    margin-bottom: -1px;
     color: var(--text);
   }
 
@@ -321,12 +324,15 @@ img { display: block; max-width: 100%; }
   }
 
   .mobile-posts-scroll {
+    position: relative;
+    z-index: 1;
     max-height: min(52svh, 430px);
-    margin: 0 0 12px;
-    padding: 0 6px 8px 14px;
+    margin: -2px 0 12px;
+    padding: 2px 6px 8px 14px;
     overflow-y: auto;
     overscroll-behavior: contain;
     background: var(--bg);
+    box-shadow: 0 -2px 0 var(--bg);
     scrollbar-width: thin;
     -webkit-overflow-scrolling: touch;
   }
@@ -1065,6 +1071,25 @@ html.header-hidden {
   .site-nav {
     top: 100%;
     gap: 0;
+  }
+}
+
+/* iOS WebKit-only seam cover for the mobile article submenu. */
+@supports (-webkit-touch-callout: none) {
+  .mobile-posts-scroll {
+    position: relative;
+  }
+
+  .mobile-posts-scroll::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: -3px;
+    height: 4px;
+    background: var(--bg);
+    pointer-events: none;
+    z-index: 10;
   }
 }
 
