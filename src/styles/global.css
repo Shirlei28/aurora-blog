@@ -323,7 +323,7 @@ img { display: block; max-width: 100%; }
   .mobile-posts-scroll {
     max-height: min(52svh, 430px);
     margin: 0 0 12px;
-    padding: 4px 6px 8px 14px;
+    padding: 0 6px 8px 14px;
     overflow-y: auto;
     overscroll-behavior: contain;
     background: var(--bg);
@@ -335,12 +335,16 @@ img { display: block; max-width: 100%; }
     margin-top: 18px;
   }
 
+  .mobile-posts-year:first-child {
+    margin-top: 0;
+  }
+
   .mobile-posts-year > p {
     position: sticky;
     top: 0;
     z-index: 1;
     margin: 0 0 5px;
-    padding: 5px 0;
+    padding: 8px 0 5px;
     background: var(--bg);
     color: var(--accent);
     font-size: 11px;
