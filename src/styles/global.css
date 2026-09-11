@@ -62,7 +62,7 @@ img { display: block; max-width: 100%; }
 
 .shell { width: min(calc(100% - 40px), var(--max)); margin-inline: auto; }
 .skip-link { position: fixed; left: 16px; top: 16px; z-index: 100; transform: translateY(-160%); background: var(--text); color: var(--bg); padding: 8px 12px; border-radius: 8px; }
-.skip-link:focus { transform: translateY(0); }
+.skip-link:focus-visible { transform: translateY(0); }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
 
 .site-header {
@@ -228,6 +228,10 @@ img { display: block; max-width: 100%; }
 
   html.header-hidden {
     --header-offset: 0px;
+  }
+
+  .skip-link {
+    display: none;
   }
   .shell { width: min(calc(100% - 28px), var(--max)); }
   .site-header { backdrop-filter: blur(10px); }
