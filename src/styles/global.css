@@ -1093,3 +1093,504 @@ html.header-hidden {
   }
 }
 
+/* =========================================================
+   Home hero atom orbit — v2, pure CSS.
+   Three shared electron orbits + four moving words.
+   ========================================================= */
+.hero-atom {
+  position: relative;
+  min-height: 450px;
+  isolation: isolate;
+  overflow: visible;
+}
+
+/* Compact high-contrast nucleus; size follows the logo more closely. */
+.atom-core {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 8;
+  width: 82px;
+  height: 82px;
+  display: grid;
+  place-items: center;
+  transform: translate(-50%, -50%);
+  border: 1px solid color-mix(in srgb, var(--bg) 18%, transparent);
+  border-radius: 50%;
+  background: var(--text);
+  box-shadow:
+    0 14px 36px rgba(0, 0, 0, .14),
+    inset 0 0 0 1px color-mix(in srgb, var(--bg) 10%, transparent);
+}
+
+.atom-core-ring {
+  position: absolute;
+  inset: -6px;
+  border: 1px solid color-mix(in srgb, var(--accent) 14%, transparent);
+  border-radius: 50%;
+  opacity: .7;
+}
+
+.atom-logo {
+  position: absolute;
+  width: 54px;
+  height: 54px;
+  object-fit: contain;
+}
+
+/*
+ * Deliberately opposite to the Header logo:
+ * light theme -> /logo-dark.svg
+ * dark theme  -> /logo.svg
+ */
+.atom-logo-dark { display: none; }
+
+html[data-theme='dark'] .atom-logo-light { display: none; }
+html[data-theme='dark'] .atom-logo-dark { display: block; }
+
+@media (prefers-color-scheme: dark) {
+  html[data-theme='system'] .atom-logo-light { display: none; }
+  html[data-theme='system'] .atom-logo-dark { display: block; }
+}
+
+/*
+ * Atomic geometry:
+ * three equal ellipses sharing one center, rotated like a classic atom symbol.
+ */
+.atom-orbit {
+  --size: 370px;
+  --squash: .43;
+  --tilt: 0deg;
+  --duration: 26s;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: var(--size);
+  aspect-ratio: 1;
+  z-index: 2;
+  pointer-events: none;
+  transform:
+    translate(-50%, -50%)
+    rotate(var(--tilt))
+    scaleY(var(--squash));
+  transform-origin: center;
+}
+
+.atom-orbit-a { --tilt: 90deg; --duration: 27s; }
+.atom-orbit-b { --tilt: 30deg; --duration: 31s; }
+.atom-orbit-c { --tilt: -30deg; --duration: 23s; }
+
+.atom-track {
+  position: absolute;
+  inset: 0;
+  border: 1px solid color-mix(in srgb, var(--accent) 37%, var(--line));
+  border-radius: 50%;
+  opacity: .82;
+}
+
+.atom-motion {
+  --delay: 0s;
+  position: absolute;
+  inset: 0;
+  transform-origin: center;
+  animation: atom-orbit-spin var(--duration) linear infinite;
+  animation-delay: var(--delay);
+}
+
+.atom-word {
+  position: absolute;
+  left: 100%;
+  top: 50%;
+  display: inline-block;
+  padding: 3px 7px;
+  white-space: nowrap;
+  background: var(--bg);
+  color: color-mix(in srgb, var(--accent) 88%, var(--text));
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  transform-origin: center;
+  animation: atom-word-counter var(--duration) linear infinite;
+  animation-delay: var(--delay);
+}
+
+/* Four words distributed over three physical tracks. */
+.atom-motion-notes {
+  --duration: 18s;
+  --delay: -3s;
+}
+
+.atom-motion-code {
+  --duration: 18s;
+  --delay: -9s;
+}
+
+.atom-motion-ideas {
+  --duration: 13s;
+  --delay: -6s;
+  animation-direction: reverse;
+}
+
+.atom-motion-ideas .atom-word {
+  animation-direction: reverse;
+}
+
+.atom-motion-life {
+  --duration: 23s;
+  --delay: -11s;
+}
+
+@keyframes atom-orbit-spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes atom-word-counter {
+  from {
+    transform:
+      translate(-50%, -50%)
+      scaleY(calc(1 / var(--squash)))
+      rotate(calc(-1 * var(--tilt)))
+      rotate(0deg);
+  }
+  to {
+    transform:
+      translate(-50%, -50%)
+      scaleY(calc(1 / var(--squash)))
+      rotate(calc(-1 * var(--tilt)))
+      rotate(-360deg);
+  }
+}
+
+@media (max-width: 900px) {
+  .hero-atom {
+    display: block;
+    min-height: 350px;
+    transform: none;
+    transform-origin: center;
+  }
+
+  .hero-atom .atom-core {
+    width: 72px;
+    height: 72px;
+  }
+
+  .hero-atom .atom-logo {
+    width: 46px;
+    height: 46px;
+  }
+
+  .hero-atom .atom-orbit {
+    --size: 300px;
+  }
+}
+
+@media (max-width: 720px) {
+  .hero .hero-atom {
+    display: block;
+    width: 100%;
+    min-height: 292px;
+    margin-top: 6px;
+  }
+
+  .hero-atom .atom-core {
+    width: 64px;
+    height: 64px;
+  }
+
+  .hero-atom .atom-core-ring {
+    inset: -5px;
+  }
+
+  .hero-atom .atom-logo {
+    width: 40px;
+    height: 40px;
+  }
+
+  .hero-atom .atom-orbit {
+    --size: 246px;
+    --squash: .43;
+  }
+
+  .hero-atom .atom-word {
+    padding: 3px 5px;
+    font-size: 8px;
+    letter-spacing: .14em;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .atom-motion,
+  .atom-word {
+    animation-play-state: paused;
+  }
+}
+
+/* =========================================================
+   Home landing — atom sweep + welcome reveal.
+   Homepage only: background, atom system and entry word.
+   ========================================================= */
+
+body:has(.home-landing) {
+  min-height: 100svh;
+  overflow: hidden;
+}
+
+body:has(.home-landing) .site-header,
+body:has(.home-landing) .site-footer {
+  display: none;
+}
+
+.home-landing {
+  position: relative;
+  width: 100%;
+  min-height: 100svh;
+  overflow: hidden;
+  background: transparent;
+}
+
+/*
+ * Desktop:
+ * the atom starts where the old right-side hero visual lived,
+ * then crosses to the symmetrical left-side position.
+ */
+.home-atom-shell {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 460px;
+  height: 460px;
+  transform: translate(-50%, -50%) translateX(22vw);
+  will-change: transform;
+  animation: home-atom-sweep 2.35s cubic-bezier(.74, .02, .2, 1) .22s forwards;
+}
+
+.home-atom-shell .hero-atom {
+  width: 100%;
+  min-height: 100%;
+}
+
+/*
+ * "欢迎" stays in the wake of the moving atom.
+ * clip-path makes it feel uncovered rather than simply faded in.
+ */
+.home-welcome {
+  position: absolute;
+  left: 72%;
+  top: 50%;
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 180px;
+  padding: 18px 24px;
+  transform: translate(-50%, calc(-50% + 12px));
+  opacity: 0;
+  filter: blur(5px);
+  color: var(--text);
+  text-decoration: none;
+  animation: home-welcome-fade 1.45s cubic-bezier(.22, 1, .36, 1) 2.05s forwards;
+}
+
+.home-welcome span {
+  position: relative;
+  font-family: Georgia, 'Songti SC', 'STSong', serif;
+  font-size: clamp(42px, 5vw, 72px);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: .08em;
+}
+
+.home-welcome span::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: .08em;
+  bottom: -.18em;
+  height: 1px;
+  background: color-mix(in srgb, var(--accent) 64%, transparent);
+  transform: scaleX(.22);
+  transform-origin: left center;
+  transition: transform 260ms ease;
+}
+
+.home-welcome:hover {
+  color: var(--accent);
+}
+
+.home-welcome:hover span::after,
+.home-welcome:focus-visible span::after {
+  transform: scaleX(1);
+}
+
+.home-welcome:focus-visible {
+  outline: 1px solid var(--accent);
+  outline-offset: 8px;
+  border-radius: 2px;
+}
+
+@keyframes home-atom-sweep {
+  from {
+    transform: translate(-50%, -50%) translateX(22vw);
+  }
+
+  to {
+    transform: translate(-50%, -50%) translateX(-22vw);
+  }
+}
+
+@keyframes home-welcome-fade {
+  from {
+    opacity: 0;
+    filter: blur(5px);
+    transform: translate(-50%, calc(-50% + 12px));
+  }
+
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: translate(-50%, -50%);
+  }
+}
+
+/*
+ * Keep the atom itself visually centered inside its moving wrapper.
+ * This neutralizes older responsive hero positioning rules.
+ */
+.home-atom-shell .hero-atom {
+  position: relative;
+  display: block;
+  margin: 0;
+  transform: none;
+  min-height: 460px;
+}
+
+/* Tablet: shorter sweep, still left-right composition. */
+@media (max-width: 1100px) and (min-width: 721px) {
+  .home-atom-shell {
+    width: 360px;
+    height: 360px;
+    animation-name: home-atom-sweep-tablet;
+  }
+
+  .home-atom-shell .hero-atom {
+    min-height: 360px;
+  }
+
+  .home-welcome {
+    left: 70%;
+  }
+
+  @keyframes home-atom-sweep-tablet {
+    from {
+      transform: translate(-50%, -50%) translateX(20vw);
+    }
+
+    to {
+      transform: translate(-50%, -50%) translateX(-20vw);
+    }
+  }
+}
+
+/*
+ * Mobile design:
+ * no full-width sweep. The atom settles near the upper center,
+ * then the welcome word appears below it. Keeps the landing calm
+ * and avoids clipping the orbital text on narrow screens.
+ */
+@media (max-width: 720px) {
+  body:has(.home-landing) {
+    overflow: hidden;
+  }
+
+  .home-landing {
+    min-height: 100svh;
+  }
+
+  .home-atom-shell {
+    left: 50%;
+    top: 42%;
+    width: min(86vw, 330px);
+    height: min(86vw, 330px);
+    transform: translate(-50%, -46%) scale(.94);
+    opacity: 0;
+    animation: home-atom-mobile-enter 1.25s cubic-bezier(.22, 1, .36, 1) .12s forwards;
+  }
+
+  .home-atom-shell .hero-atom {
+    width: 100%;
+    min-height: 100%;
+    margin: 0;
+  }
+
+  .home-welcome {
+    left: 50%;
+    top: 76%;
+    min-width: 0;
+    padding: 14px 18px;
+    clip-path: none;
+    opacity: 0;
+    transform: translate(-50%, 14px);
+    animation: home-welcome-mobile .85s ease 1.05s forwards;
+  }
+
+  .home-welcome span {
+    font-size: clamp(38px, 12vw, 54px);
+    letter-spacing: .12em;
+    white-space: nowrap;
+  }
+
+  @keyframes home-atom-mobile-enter {
+    from {
+      opacity: 0;
+      transform: translate(-50%, -42%) scale(.9);
+    }
+
+    to {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+  }
+
+  @keyframes home-welcome-mobile {
+    from {
+      opacity: 0;
+      transform: translate(-50%, 14px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-atom-shell,
+  .home-welcome {
+    animation: none !important;
+  }
+
+  .home-atom-shell {
+    transform: translate(-50%, -50%) translateX(-22vw);
+  }
+
+  .home-welcome {
+    opacity: 1;
+    filter: none;
+    transform: translate(-50%, -50%);
+  }
+
+  @media (max-width: 720px) {
+    .home-atom-shell {
+      opacity: 1;
+      transform: translate(-50%, -50%);
+    }
+
+    .home-welcome {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+  }
+}

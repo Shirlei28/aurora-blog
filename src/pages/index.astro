@@ -1,101 +1,42 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import ArticleCard from '@/components/ArticleCard.astro';
-import { getPublishedPosts, getCategories, getTags, getPostHref, formatShortDate } from '@/lib/posts';
+import { getPublishedPosts, getPostHref } from '@/lib/posts';
 import { SITE } from '@/lib/config';
 
 const posts = await getPublishedPosts();
-const featured = posts.find((post) => post.data.featured) || posts[0];
-const latest = posts.filter((post) => !featured || post.id !== featured.id).slice(0, 6);
-const categories = getCategories(posts);
-const tags = getTags(posts).slice(0, 12);
-const latestDate = posts[0] ? formatShortDate(posts[0].data.pubDate) : '';
 const latestPostHref = posts[0] ? getPostHref(posts[0]) : '/posts/';
 ---
+
 <BaseLayout description={SITE.description}>
-  <section class="hero shell">
-    <div class="hero-copy">
-      <p class="eyebrow"><span class="eyebrow-dot"></span> INDEPENDENT BLOG · 2026</p>
-      <h1>把日子写下来，<br /><em>让思考有地方安放。</em></h1>
-      <p class="hero-lead">这是一个慢速生长的个人网站。写技术，也写生活；记下那些当下微小、几年后仍然值得回看的东西。</p>
-      <div class="hero-actions">
-        <a class="button button-primary" href={latestPostHref}>进入文章 <span>↗</span></a>
-        <a class="button button-ghost" href="/about/">认识这里</a>
-      </div>
-      <div class="hero-note"><span>LAST UPDATED</span><strong>{latestDate || '—'}</strong><span>·</span><span>{posts.length} ARTICLES</span></div>
-    </div>
-    <div class="hero-orbit" aria-hidden="true">
-      <div class="orbit orbit-a"></div>
-      <div class="orbit orbit-b"></div>
-      <div class="orbit-core"><span>A</span></div>
-      <div class="orbit-label orbit-label-top">NOTES</div>
-      <div class="orbit-label orbit-label-bottom">IDEAS / LIFE / CODE</div>
-    </div>
-  </section>
+  <main class="home-landing">
+    <div class="home-atom-shell" aria-hidden="true">
+      <div class="hero-orbit hero-atom">
+        <div class="atom-orbit atom-orbit-a">
+          <div class="atom-track"></div>
+          <div class="atom-motion atom-motion-notes"><span class="atom-word">NOTES</span></div>
+          <div class="atom-motion atom-motion-code"><span class="atom-word">CODE</span></div>
+        </div>
 
-  {featured && (
-    <section class="section-block shell featured-section">
-      <div class="section-heading">
-        <div>
-          <p class="eyebrow">EDITOR'S PICK</p>
-          <h2>最近最想分享的一篇</h2>
+        <div class="atom-orbit atom-orbit-b">
+          <div class="atom-track"></div>
+          <div class="atom-motion atom-motion-ideas"><span class="atom-word">IDEAS</span></div>
         </div>
-        <a class="text-link" href={getPostHref(featured)}>打开文章 ↗</a>
-      </div>
-      <article class="featured-card">
-        <div class="featured-content">
-          <div class="article-meta"><span>{featured.data.category}</span><span>·</span><span>{formatShortDate(featured.data.pubDate)}</span></div>
-          <h3><a href={getPostHref(featured)}>{featured.data.title}</a></h3>
-          <p>{featured.data.description}</p>
-          <div class="featured-foot">
-            <div class="tag-row">
-              {featured.data.tags.map((tag) => <a href={`/tags/${encodeURIComponent(tag)}/`}>#{tag}</a>)}
-            </div>
-            <a class="circle-link" href={getPostHref(featured)} aria-label="阅读文章">↗</a>
-          </div>
-        </div>
-        {featured.data.cover ? <img src={featured.data.cover} alt={featured.data.coverAlt || ''} loading="eager" /> : <div class="featured-placeholder"><span>A</span><small>FEATURED</small></div>}
-      </article>
-    </section>
-  )}
 
-  <section class="section-block shell">
-    <div class="section-heading">
-      <div>
-        <p class="eyebrow">JOURNAL</p>
-        <h2>最近写了什么</h2>
-      </div>
-      <a class="text-link" href={latestPostHref}>进入最新文章 · {posts.length}</a>
-    </div>
-    <div class="article-list article-list-editorial">
-      {latest.map((post, index) => <ArticleCard post={post} compact={index > 2} />)}
-    </div>
-  </section>
+        <div class="atom-orbit atom-orbit-c">
+          <div class="atom-track"></div>
+          <div class="atom-motion atom-motion-life"><span class="atom-word">LIFE</span></div>
+        </div>
 
-  <section class="section-block shell split-section">
-    <div class="manifesto">
-      <p class="eyebrow">A SMALL MANIFESTO</p>
-      <h2>不追热点，<br /><em>只留下值得回看的东西。</em></h2>
-      <p>博客不是作品集，更像一张长期使用的桌子。代码、书、旅行、观察和还没想明白的问题，都可以先放在这里。</p>
-      <a class="text-link" href="/about/">更多关于这里 ↗</a>
-    </div>
-    <div class="browse-panel">
-      <div>
-        <div class="mini-heading"><span>01</span><strong>主题</strong></div>
-        <div class="category-grid">
-          {categories.map((category) => (
-            <a class="category-tile" href={`/categories/${encodeURIComponent(category)}/`}>
-              <span>{category}</span><small>{posts.filter((post) => post.data.category === category).length}</small>
-            </a>
-          ))}
-        </div>
-      </div>
-      <div>
-        <div class="mini-heading"><span>02</span><strong>标签</strong></div>
-        <div class="tag-cloud">
-          {tags.map((tag) => <a href={`/tags/${encodeURIComponent(tag)}/`}>#{tag}</a>)}
+        <div class="atom-core">
+          <span class="atom-core-ring"></span>
+          <img class="atom-logo atom-logo-light" src="/logo-dark.svg" alt="" width="54" height="54" />
+          <img class="atom-logo atom-logo-dark" src="/logo.svg" alt="" width="54" height="54" />
         </div>
       </div>
     </div>
-  </section>
+
+    <a class="home-welcome" href={latestPostHref} aria-label="进入文章">
+      <span>欢迎</span>
+    </a>
+  </main>
 </BaseLayout>
