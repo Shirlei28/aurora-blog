@@ -1,8 +1,8 @@
 ---
 title: 测试8picture
 description: 无
-pubDate: 2026-09-12
-updatedDate: 2026-09-12
+pubDate: 2023-09-12
+updatedDate: 2023-09-12
 category: 技术
 tags:
   - Astro

@@ -8,26 +8,42 @@ interface Props {
 }
 
 const { posts, currentId } = Astro.props;
-const year = 2026;
-const yearPosts = posts.filter((post) => post.data.pubDate.getFullYear() === year);
+
+const currentPost = currentId ? posts.find((post) => post.id === currentId) : undefined;
+const currentYear = currentPost?.data.pubDate.getFullYear();
+
+const postsByYear = posts.reduce((groups, post) => {
+  const year = post.data.pubDate.getFullYear();
+  const yearPosts = groups.get(year) ?? [];
+  yearPosts.push(post);
+  groups.set(year, yearPosts);
+  return groups;
+}, new Map<number, Post[]>());
+
+const years = [...postsByYear.keys()].sort((a, b) => b - a);
+const defaultOpenYear = currentYear ?? years[0];
 ---
-<aside class="article-sidebar" aria-label="2026 文章导航">
+
+<aside class="article-sidebar" aria-label="文章导航">
   <div class="article-sidebar-inner">
     <div class="sidebar-posts sidebar-posts-only">
-      <details open>
-        <summary>{year}</summary>
-        <div class="sidebar-year-posts">
-          {yearPosts.map((post) => (
-            <a
-              class:list={['sidebar-post-link', post.id === currentId && 'is-active']}
-              href={getPostHref(post)}
-              aria-current={post.id === currentId ? 'page' : undefined}
-            >
-              {post.data.title}
-            </a>
-          ))}
-        </div>
-      </details>
+      {years.map((year) => (
+        <details open={year === defaultOpenYear}>
+          <summary>{year}</summary>
+
+          <div class="sidebar-year-posts">
+            {(postsByYear.get(year) ?? []).map((post) => (
+              <a
+                class:list={['sidebar-post-link', post.id === currentId && 'is-active']}
+                href={getPostHref(post)}
+                aria-current={post.id === currentId ? 'page' : undefined}
+              >
+                {post.data.title}
+              </a>
+            ))}
+          </div>
+        </details>
+      ))}
     </div>
   </div>
 </aside>

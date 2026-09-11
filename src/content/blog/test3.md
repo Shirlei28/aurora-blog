@@ -1,8 +1,8 @@
 ---
 title: 测试3picture
 description: 无
-pubDate: 2026-09-12
-updatedDate: 2026-09-12
+pubDate: 2025-09-12
+updatedDate: 2025-09-12
 category: 技术
 tags:
   - Astro

@@ -3,9 +3,14 @@ import { getCollection, type CollectionEntry } from 'astro:content';
 export type Post = CollectionEntry<'blog'>;
 
 export async function getPublishedPosts() {
-  const posts = await getCollection('blog', ({ data }) =>
-    import.meta.env.PROD ? !data.draft : true
-  );
+  const now = new Date();
+
+  const posts = await getCollection('blog', ({ data }) => {
+    const isDue = data.pubDate.valueOf() <= now.valueOf();
+    const isVisible = import.meta.env.PROD ? !data.draft : true;
+
+    return isDue && isVisible;
+  });
 
   return posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 }

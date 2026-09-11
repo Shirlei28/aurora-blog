@@ -16,7 +16,13 @@ import '@/styles/article.css';
 import ExternalLinks from '@/components/ExternalLinks.astro';
 
 export async function getStaticPaths() {
-  const posts = await getCollection('blog', ({ data }) => import.meta.env.PROD ? !data.draft : true);
+  const now = new Date();
+
+  const posts = await getCollection('blog', ({ data }) => {
+    if (!import.meta.env.PROD) return true;
+    return !data.draft && data.pubDate.valueOf() <= now.valueOf();
+  });
+
   return posts.map((post) => ({
     params: { slug: post.id },
     props: { post }
@@ -57,22 +63,6 @@ const jsonLd = articleJsonLd({
     <ArticleSidebar posts={posts} currentId={post.id} />
 
     <div class="reading-main">
-      <details class="mobile-article-nav">
-        <summary>2026 文章</summary>
-        <div class="mobile-article-nav-links mobile-post-list">
-          {posts
-            .filter((item) => item.data.pubDate.getFullYear() === 2026)
-            .map((item) => (
-              <a
-                class:list={[item.id === post.id && 'is-active']}
-                href={getPostHref(item)}
-                aria-current={item.id === post.id ? 'page' : undefined}
-              >
-                {item.data.title}
-              </a>
-            ))}
-        </div>
-      </details>
 
       <article class="reading-article">
         <header class="reading-header reading-header-minimal">
