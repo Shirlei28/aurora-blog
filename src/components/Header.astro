@@ -6,6 +6,14 @@ import ThemeToggle from './ThemeToggle.astro';
 
 const posts = await getPublishedPosts();
 const latestPostHref = posts[0] ? getPostHref(posts[0]) : '/posts/';
+
+const postsByYear = posts.reduce((groups, post) => {
+  const year = post.data.pubDate.getFullYear();
+  const current = groups.get(year) ?? [];
+  current.push(post);
+  groups.set(year, current);
+  return groups;
+}, new Map<number, typeof posts>());
 ---
 <header class="site-header">
   <div class="shell header-inner">
@@ -40,8 +48,33 @@ const latestPostHref = posts[0] ? getPostHref(posts[0]) : '/posts/';
       {SITE.nav
         .filter((item) => item.href !== '/' && item.href !== '/notes/')
         .map((item) => {
-          const href = item.href === '/posts/' ? latestPostHref : item.href;
-          return <a href={href}>{item.label}</a>;
+          if (item.href === '/posts/') {
+            return (
+              <>
+                <a class="desktop-posts-link" href={latestPostHref}>{item.label}</a>
+
+                <details class="mobile-posts-menu">
+                  <summary>{item.label}</summary>
+
+                  <div class="mobile-posts-scroll">
+                    {[...postsByYear.entries()].map(([year, yearPosts]) => (
+                      <section class="mobile-posts-year">
+                        <p>{year}</p>
+
+                        <div class="mobile-posts-list">
+                          {yearPosts.map((post) => (
+                            <a href={getPostHref(post)}>{post.data.title}</a>
+                          ))}
+                        </div>
+                      </section>
+                    ))}
+                  </div>
+                </details>
+              </>
+            );
+          }
+
+          return <a href={item.href}>{item.label}</a>;
         })}
       <SearchDialog />
       <ThemeToggle />
