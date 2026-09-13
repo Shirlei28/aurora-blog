@@ -46,7 +46,12 @@ const postsByYear = posts.reduce((groups, post) => {
 
     <nav id="site-nav" class="site-nav" aria-label="主导航">
       {SITE.nav
-        .filter((item) => item.href !== '/' && item.href !== '/notes/')
+        .filter((item) =>
+          item.href !== '/' &&
+          item.href !== '/notes/' &&
+          item.href !== '/categories/' &&
+          item.href !== '/tags/'
+        )
         .map((item) => {
           if (item.href === '/posts/') {
             return (

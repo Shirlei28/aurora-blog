@@ -1,31 +1,28 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import { SITE } from '@/lib/config';
+import AtomAnimation from '@/components/AtomAnimation.astro';
 ---
-<BaseLayout title={`关于 | ${SITE.title}`} description="关于作者与这个博客。">
-  <section class="page-intro shell">
-    <p class="eyebrow">ABOUT</p>
-    <h1>关于这个博客</h1>
-    <p>一个尽量保持简单、诚实、可迁移的个人网站。</p>
-  </section>
-  <section class="section-block shell about-grid">
-    <div class="about-card">
-      <p class="eyebrow">HELLO</p>
-      <h2>你好，我是 {SITE.author}。</h2>
-      <p>这里是我的长期数字花园。比起追逐流量，我更在意一篇文章多年以后重新打开，仍然有一点值得读的东西。</p>
-    </div>
-    <div class="prose">
-      <h2>为什么做独立博客？</h2>
-      <p>社交平台适合即时表达，而博客适合把想法慢慢沉淀成可以检索、引用和修订的内容。</p>
-      <p>本站采用 Git + Markdown + Astro 的静态内容工作流，文章和代码都可以长期保存、版本化，也方便未来迁移到其他平台。</p>
-      <h2>本站技术栈</h2>
-      <ul>
-        <li>Astro + TypeScript</li>
-        <li>Markdown / MDX + Content Collections</li>
-        <li>Pagefind 静态全文搜索</li>
-        <li>Twikoo 评论（可选）</li>
-        <li>Umami 统计（可选）</li>
-      </ul>
-    </div>
-  </section>
+
+<BaseLayout title="关于 | Aurora Blog">
+  <main class="about-hero shell">
+    <section class="about-copy">
+  
+      <!-- 在这里编辑你的介绍文字 -->
+      <p>
+        为什么要搭建一个 Blog？
+      </p>
+      <p>
+        人和 LLM 有点相似之处就是：如果吃进去的是垃圾，吐出来的也十有八九是垃圾。如果被各大平台的算法绑架，那你知道的，可能就是别人想让你知道的。
+        与其被洗脑，吃垃圾，不如自己寻找优质内容圈子（Blog也许是这样一个圈子吧），搭建一个属于自己的网站来写作，记录自己，分享快乐。（另外给一个小彩蛋：就在动画里）
+      </p>
+
+      
+        
+      
+    </section>
+
+    <section class="about-atom">
+      <AtomAnimation size="about" />
+    </section>
+  </main>
 </BaseLayout>

@@ -1,0 +1,30 @@
+---
+interface Props {
+  size?: "home" | "about";
+}
+const { size = "home" } = Astro.props;
+---
+
+<div class:list={["atom-animation", `atom-animation-${size}`]} aria-hidden="true">
+  <div class="atom-orbit atom-orbit-a">
+    <div class="atom-track"></div>
+    <div class="atom-motion atom-motion-notes"><span class="atom-word">NOTES</span></div>
+    <div class="atom-motion atom-motion-code"><span class="atom-word">CODE</span></div>
+  </div>
+
+  <div class="atom-orbit atom-orbit-b">
+    <div class="atom-track"></div>
+    <div class="atom-motion atom-motion-ideas"><span class="atom-word">IDEAS</span></div>
+  </div>
+
+  <div class="atom-orbit atom-orbit-c">
+    <div class="atom-track"></div>
+    <div class="atom-motion atom-motion-life"><span class="atom-word">LIFE</span></div>
+  </div>
+
+  <div class="atom-core">
+    <span class="atom-core-ring"></span>
+    <img class="atom-logo atom-logo-light" src="/logo-dark.svg" alt="" />
+    <img class="atom-logo atom-logo-dark" src="/logo.svg" alt="" />
+  </div>
+</div>

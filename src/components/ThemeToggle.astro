@@ -1,5 +1,11 @@
 <button class="icon-button theme-toggle" type="button" aria-label="切换主题" title="切换主题">
-  <span aria-hidden="true">◐</span>
+  <svg class="theme-icon theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true">
+    <circle cx="12" cy="12" r="3.6"></circle>
+    <path d="M12 2.7v2.1M12 19.2v2.1M2.7 12h2.1M19.2 12h2.1M5.42 5.42l1.49 1.49M17.09 17.09l1.49 1.49M18.58 5.42l-1.49 1.49M6.91 17.09l-1.49 1.49"></path>
+  </svg>
+  <svg class="theme-icon theme-icon-moon" viewBox="0 0 24 24" aria-hidden="true">
+    <path d="M19.25 15.15A7.7 7.7 0 0 1 8.85 4.75 7.9 7.9 0 1 0 19.25 15.15Z"></path>
+  </svg>
 </button>
 <script>
   const button = document.querySelector<HTMLButtonElement>('.theme-toggle');
@@ -8,10 +14,29 @@
   if (saved === 'light' || saved === 'dark') root.dataset.theme = saved;
   else root.dataset.theme = 'system';
 
+  const getResolvedTheme = () => {
+    if (root.dataset.theme === 'light' || root.dataset.theme === 'dark') return root.dataset.theme;
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  };
+
+  const updateThemeLabel = () => {
+    if (!button) return;
+    const isDark = getResolvedTheme() === 'dark';
+    const label = isDark ? '切换到浅色模式' : '切换到深色模式';
+    button.setAttribute('aria-label', label);
+    button.setAttribute('title', label);
+  };
+
+  updateThemeLabel();
+
   button?.addEventListener('click', () => {
-    const current = root.dataset.theme;
-    const next = current === 'dark' ? 'light' : 'dark';
+    const next = getResolvedTheme() === 'dark' ? 'light' : 'dark';
     root.dataset.theme = next;
     localStorage.setItem('theme', next);
+    updateThemeLabel();
+  });
+
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+    if (root.dataset.theme === 'system') updateThemeLabel();
   });
 </script>

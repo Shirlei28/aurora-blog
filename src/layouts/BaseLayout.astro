@@ -57,12 +57,13 @@ const imageUrl = image ? absoluteUrl(image) : undefined;
     <title>{title}</title>
     <slot name="head" />
   </head>
-  <body>
-    <a class="skip-link" href="#main-content">跳到正文</a>
+  <body class="site-body">
     <Header />
-    <main id="main-content">
+
+    <main class="site-main">
       <slot />
     </main>
+
     <Footer />
   </body>
 </html>

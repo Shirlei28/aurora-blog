@@ -1,24 +1,32 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '@/layouts/BaseLayout.astro';
+
 const links = await getCollection('links');
 ---
-<BaseLayout title="链接 | Aurora Blog" description="一些值得长期访问的站点与朋友。">
-  <section class="page-intro shell">
-    <p class="eyebrow">LINKS</p>
-    <h1>链接</h1>
-    <p>一些值得保存、访问和认识的人与站点。</p>
-  </section>
-  <section class="section-block shell links-grid">
-    {links.map((link) => (
-      <a class="link-card" href={link.data.url} target="_blank" rel="noreferrer noopener">
-        <div class="link-avatar">{link.data.name.slice(0, 1)}</div>
-        <div>
-          <h2>{link.data.name} ↗</h2>
-          <p>{link.data.description}</p>
-          <small>{new URL(link.data.url).hostname}</small>
-        </div>
-      </a>
-    ))}
-  </section>
+
+<BaseLayout title="链接 | Aurora Blog" description="Aurora Blog 收藏的网站与朋友。">
+  <main class="links-page shell">
+    <section class="links-grid-v2">
+      {links.map((link) => (
+        <a
+          class="link-item"
+          href={link.data.url}
+          target="_blank"
+          rel="noreferrer noopener"
+        >
+          <div class="link-mark">
+            {link.data.name.slice(0, 1)}
+          </div>
+
+          <div class="link-content">
+            <h2>{link.data.name}</h2>
+            <p>{link.data.description}</p>
+          </div>
+
+          <span class="link-arrow">↗</span>
+        </a>
+      ))}
+    </section>
+  </main>
 </BaseLayout>

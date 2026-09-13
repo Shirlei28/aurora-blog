@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
+import AtomAnimation from '@/components/AtomAnimation.astro';
 import { getPublishedPosts, getPostHref } from '@/lib/posts';
 import { SITE } from '@/lib/config';
 
@@ -10,29 +11,7 @@ const latestPostHref = posts[0] ? getPostHref(posts[0]) : '/posts/';
 <BaseLayout description={SITE.description}>
   <main class="home-landing">
     <div class="home-atom-shell" aria-hidden="true">
-      <div class="hero-orbit hero-atom">
-        <div class="atom-orbit atom-orbit-a">
-          <div class="atom-track"></div>
-          <div class="atom-motion atom-motion-notes"><span class="atom-word">NOTES</span></div>
-          <div class="atom-motion atom-motion-code"><span class="atom-word">CODE</span></div>
-        </div>
-
-        <div class="atom-orbit atom-orbit-b">
-          <div class="atom-track"></div>
-          <div class="atom-motion atom-motion-ideas"><span class="atom-word">IDEAS</span></div>
-        </div>
-
-        <div class="atom-orbit atom-orbit-c">
-          <div class="atom-track"></div>
-          <div class="atom-motion atom-motion-life"><span class="atom-word">LIFE</span></div>
-        </div>
-
-        <div class="atom-core">
-          <span class="atom-core-ring"></span>
-          <img class="atom-logo atom-logo-light" src="/logo-dark.svg" alt="" width="54" height="54" />
-          <img class="atom-logo atom-logo-dark" src="/logo.svg" alt="" width="54" height="54" />
-        </div>
-      </div>
+      <AtomAnimation size="home" />
     </div>
 
     <a class="home-welcome" href={latestPostHref} aria-label="进入文章">
